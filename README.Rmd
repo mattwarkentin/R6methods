@@ -64,31 +64,6 @@ foo <- Foo$new()
 foo[1, 2:3]
 ```
 
-## Supported Methods
-
-```{r echo=FALSE}
-library(magrittr)
-tbl <- 
-  tibble::tribble(
-  ~Group, ~`Internal Method`, ~`S3 Method`, ~Description,
-  "Arithmetic" ,".add()", "`+`", "Adds an object to your R6 instance.",
-  "Arithmetic" ,".sub()", "`-`", "Adds an object to your R6 instance.",
-  "Arithmetic" ,".mul()", "`*`", "Adds an object to your R6 instance.",
-  "Arithmetic" ,".div()", "`/`", "Adds an object to your R6 instance.",
-  "Arithmetic" ,".mod()", "`%%`", "Modular division",
-  "Subset" ,".subset() or .getitem()", "`[`", "Extract an element based on an index.",
-  "Subset" ,".subset2() or .getitem2()", "`[[`", "Extract an element based on an index."
-)
-gt::gt(
-  tbl,
-  groupname_col = "Group"
-) %>% 
-  gt::cols_width(
-    vars(`Internal Method`, `S3 Method`) ~ gt::px(200),
-    vars(Description) ~ gt::px(400)
-  )
-```
-
 ---
 
 ## Code of Conduct
