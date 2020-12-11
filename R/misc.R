@@ -1,0 +1,10 @@
+length
+str
+summary
+autoplot
+with
+seq
+format
+as.list
+is.na
+anyNA
