@@ -14,11 +14,13 @@ status](https://github.com/mattwarkentin/R6methods/workflows/R-CMD-check/badge.s
 The goal of `R6methods` is to provide a *lightweight* package that
 extends the S3 generic support for `R6` class objects. This package
 defines several S3 methods for common `R` generics (e.g. `str()`) and
-operators (e.g. `[` or `$`) to make it straightforward to define public
-methods in your `R6` class and have them *“just work”*.
+operators (e.g. `[` or `[<-`) to make it straightforward to define
+public methods in your `R6` class and have them *“just work”*.
 
-This package is very experimental and liable to change drastically. Use
-at your own risk!
+This package is **very experimental** and liable to change drastically.
+Use at your own risk! Developing this package was primarily a learning
+experience for working with `R6` and `S3`, and may not have any
+practical use.
 
 ## Installation
 
@@ -35,9 +37,9 @@ remotes::install_github("mattwarkentin/R6methods")
 
 This package is primarily designed for use by `R` package developers. If
 you are developing a package which contains `R6` classes, you can save
-yourself extra work defining S3 methods leveraging `R6methods`.
-`R6methods` is meant to be a lightweight addition for increasing `R6`
-generic support.
+yourself extra work, such as defining `S3` methods for common `R`
+generics. `R6methods` is meant to be a lightweight addition for
+providing increased `S3` generic support.
 
 The easiest way to benefit from this package is by depending on
 `R6methods` in your package `DESCRIPTION` file.
@@ -101,8 +103,6 @@ foo - 20
 foo < 2
 #> [1] FALSE
 ```
-
-------------------------------------------------------------------------
 
 ### Supported methods
 
