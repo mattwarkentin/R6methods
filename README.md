@@ -71,37 +71,30 @@ from the `python` OOP.
 These dot-dunder methods must be public methods, and your class must
 also inherit the `R6` class (i.e. `R6::R6Class(class = TRUE)`, the
 default). Here is a toy example that adds support to an `R6` class `Foo`
-for `+`, `-`, and `<` operations.
+for the `[` operator.
 
 ``` r
 library(R6methods)
 
 Foo <- R6::R6Class(
   public = list(
-    x = 10,
-    .__add__ = function(y) {
-      self$x + y
-    },
-    .__sub__ = function(y) {
-      self$x - y
-    },
-    .__lt__ = function(y) {
-      self$x < y
+    x = mtcars,
+    .__subset__ = function(i, j, ...) {
+      self$x[i, j, ...]
     }
   )
 )
 
 foo <- Foo$new()
 
-# Arithmetic
-foo + 10
-#> [1] 20
-foo - 20
-#> [1] -10
-
-# Relational
-foo < 2
-#> [1] FALSE
+# Subset
+foo[1:5, 1:3]
+#>                    mpg cyl disp
+#> Mazda RX4         21.0   6  160
+#> Mazda RX4 Wag     21.0   6  160
+#> Datsun 710        22.8   4  108
+#> Hornet 4 Drive    21.4   6  258
+#> Hornet Sportabout 18.7   8  360
 ```
 
 ### Supported methods
