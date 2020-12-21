@@ -13,13 +13,14 @@ Description: This package provides S3 methods for many common R generics.
     special naming semantics.
 License: MIT + file LICENSE
 Imports:
+  coro,
   R6,
-  rlang
+  rlang,
+  utils
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
