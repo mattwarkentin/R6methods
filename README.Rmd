@@ -18,9 +18,12 @@ options(max.print = 100)
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R build status](https://github.com/mattwarkentin/R6methods/workflows/R-CMD-check/badge.svg)](https://github.com/mattwarkentin/R6methods/actions)
 <!-- badges: end -->
 
 The goal of `R6methods` is to provide a _lightweight_ package that extends the S3 generic support for `R6` class objects. This package defines several S3 methods for common `R` generics (e.g. `str()`) and operators (e.g. `[` or `$`) to make it straightforward to define public methods in your `R6` class and have them _"just work"_.
+
+This package is very experimental and liable to change drastically. Use at your own risk!
 
 ## Installation
 
@@ -50,6 +53,8 @@ Description: This package...
 Depends:
   R6methods
 ```
+
+You may optionally import specific methods using the `@importFrom` `roxygen2` tag.
 
 ### Writing dot-dunder methods
 
@@ -96,31 +101,31 @@ library(magrittr)
 R6methods <- 
   tibble::tribble(
   ~Group, ~`Dot-Dunder Method`, ~`S3 Method`, ~Description,
-  "Arithmetic" ,".__add__(e2)", "`+`", "",
-  "Arithmetic" ,".__sub__(e2)", "`-`", "",
-  "Arithmetic" ,".__mul__(e2)", "`*`", "",
-  "Arithmetic" ,".__div__(e2)", "`/`", "",
-  "Arithmetic" ,".__pow__(e2)", "`^`", "",
-  "Arithmetic" ,".__mod__(e2)", "`%%`", "",
-  "Arithmetic" ,".__intdiv__(e2)", "`%/%`", "",
+  "Arithmetic" ,".__add__(e2)", "`+`", "Addition",
+  "Arithmetic" ,".__sub__(e2)", "`-`", "Subtraction",
+  "Arithmetic" ,".__mul__(e2)", "`*`", "Multiplication",
+  "Arithmetic" ,".__div__(e2)", "`/`", "Divisiion",
+  "Arithmetic" ,".__pow__(e2)", "`^`", "Powers/exponents",
+  "Arithmetic" ,".__mod__(e2)", "`%%`", "Modular division",
+  "Arithmetic" ,".__intdiv__(e2)", "`%/%`", "Integer division",
   
-  "Subsetting" ,".__subset__(i, j, ...)", "`[`", "",
-  "Subsetting" ,".__subset2__(i, j, ...)", "`[[`", "",
-  "Subsetting" ,".__subsetrep__(..., value)", "`[<-`", "",
-  "Subsetting" ,".__subset2rep__(..., value)", "`[[<-`", "",
+  "Subsetting" ,".__subset__(i, j, ...)", "`[`", "Subset with `[`",
+  "Subsetting" ,".__subsetrep__(i, j, ..., value)", "`[<-`", "Subset assignment with `[<-`",
+  "Subsetting" ,".__subset2__(i, j, ...)", "`[[`", "Subset with `[[`",
+  "Subsetting" ,".__subset2rep__(i, j, ..., value)", "`[[<-`", "Subset assignment with `[[<-`",
   
-  "Relational" ,".__lt__(e2)", "`<`", "",
-  "Relational" ,".__gt__(e2)", "`>`", "",
-  "Relational" ,".__le__(e2)", "`<=`", "",
-  "Relational" ,".__ge__(e2)", "`>=`", "",
-  "Relational" ,".__eq__(e2)", "`==`", "",
-  "Relational" ,".__ne__(e2)", "`!=`", "",
-  "Relational" ,".__ae__(e2)", "`all.equal`", "",
+  "Relational" ,".__lt__(e2)", "`<`", "Less than",
+  "Relational" ,".__gt__(e2)", "`>`", "Greater than",
+  "Relational" ,".__le__(e2)", "`<=`", "Less than or equal to",
+  "Relational" ,".__ge__(e2)", "`>=`", "Greater than or equal to",
+  "Relational" ,".__eq__(e2)", "`==`", "Equality",
+  "Relational" ,".__ne__(e2)", "`!=`", "Non-equality",
+  "Relational" ,".__ae__(e2)", "all.equal", "All equal",
   
-  "Misc", ".__data__(...)", "as.data.frame", "",
-  "Misc", ".__length__()", "length", "",
-  "Misc", ".__names()__", "names", "",
-  "Misc", ".__str(...)__", "str", ""
+  "Misc", ".__data__(...)", "as.data.frame", "Extracts a data frame",
+  "Misc", ".__length__()", "length", "Returns a custom length, rather the length of the R6 object",
+  "Misc", ".__names()__", "names", "Returns names, rather the names of the R6 object",
+  "Misc", ".__str(...)__", "str", "Returns a custom strcuture, rather the structure of the R6 object"
 )
 
 tbl <-
@@ -139,9 +144,11 @@ gt::gtsave(
 )
 ```
 
+### Iteration
+
 There is one other special method, `.__getitem__(...)`, which, if defined, will allow you easily turn your `R6` class into an iterator. You must also define the `._length__()` method. You can check if your `R6` instance is iterable by calling `R6methods::is.iterable(myR6class)`.
 
-If your `R6` instance is iterable, you can call `R6methods::iter(myR6class)` to turn your class into a `coro` iterator. The returned object is a `generator`. The object created by calling this function is an iterator that will iterate the `length()` of your `R6` instance, producing batches of data according to the `.__getitem__()` method.
+If your `R6` instance is iterable, you can call `R6methods::iter(myR6instance)` to turn your instance into a `coro` iterator. The returned object is a `generator` (i.e. function factory). Calling this `generator` will produce an iterator that iterates the `length()` of your `R6` instance, producing batches of data according to the `.__getitem__()` method.
 
 ```{r iterator}
 myClass <- R6::R6Class(

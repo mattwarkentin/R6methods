@@ -22,7 +22,7 @@ iter <- function(x) {
     is.function(.subset2(x, ".__getitem__"))
   )
   coro::generator(
-    function() {
+    function(collate_fn = NULL) {
       for (i in 1:x$.__length__()) {
         coro::yield(x$.__getitem__(i))
       }

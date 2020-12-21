@@ -7,6 +7,8 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R build
+status](https://github.com/mattwarkentin/R6methods/workflows/R-CMD-check/badge.svg)](https://github.com/mattwarkentin/R6methods/actions)
 <!-- badges: end -->
 
 The goal of `R6methods` is to provide a *lightweight* package that
@@ -14,6 +16,9 @@ extends the S3 generic support for `R6` class objects. This package
 defines several S3 methods for common `R` generics (e.g. `str()`) and
 operators (e.g. `[` or `$`) to make it straightforward to define public
 methods in your `R6` class and have them *“just work”*.
+
+This package is very experimental and liable to change drastically. Use
+at your own risk!
 
 ## Installation
 
@@ -48,6 +53,9 @@ The easiest way to benefit from this package is by depending on
     Description: This package...
     Depends:
       R6methods
+
+You may optionally import specific methods using the `@importFrom`
+`roxygen2` tag.
 
 ### Writing dot-dunder methods
 
@@ -105,6 +113,8 @@ and gain support for the corresponding S3 method.
 
 <img src="man/figures/README-supported-methods-1.png" width="100%" />
 
+### Iteration
+
 There is one other special method, `.__getitem__(...)`, which, if
 defined, will allow you easily turn your `R6` class into an iterator.
 You must also define the `._length__()` method. You can check if your
@@ -112,11 +122,11 @@ You must also define the `._length__()` method. You can check if your
 `R6methods::is.iterable(myR6class)`.
 
 If your `R6` instance is iterable, you can call
-`R6methods::iter(myR6class)` to turn your class into a `coro` iterator.
-The returned object is a `generator`. The object created by calling this
-function is an iterator that will iterate the `length()` of your `R6`
-instance, producing batches of data according to the `.__getitem__()`
-method.
+`R6methods::iter(myR6instance)` to turn your instance into a `coro`
+iterator. The returned object is a `generator` (i.e. function factory).
+Calling this `generator` will produce an iterator that iterates the
+`length()` of your `R6` instance, producing batches of data according to
+the `.__getitem__()` method.
 
 ``` r
 myClass <- R6::R6Class(
